@@ -26,6 +26,9 @@ WORKDIR /var/www/html
 # Copier le code du projet
 COPY . /var/www/html
 
+# Lancer l'installation des dépendances Composer pendant la construction
+RUN composer install --no-dev --optimize-autoloader
+
 # Donner les bons droits au dossier public de Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
