@@ -30,10 +30,11 @@ COPY . /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
 # Donner les bons droits au dossier public de Laravel
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Configurer le DocumentRoot d'Apache pour qu'il pointe vers le dossier /public de Laravel
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
 # Lancer les migrations et démarrer Apache
-CMD ["sh", "-c", "php artisan migrate --force || true && apache2-foreground"]
+CMD ["apache2-foreground"]
